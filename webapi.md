@@ -11,7 +11,7 @@ Server addr:  77.81.229.90
 - [ ] Implementazione delle funzioni WebAPI
 - [ ] Ingrandire il set di dati
 - [ ] Preparare qualche test per l'API
- 
+
 
 # Domande da risolvere
 
@@ -27,174 +27,96 @@ Server addr:  77.81.229.90
 2. Tutti gli URL restituiti dalla nostra API sono **ASSOLUTI**
 3. Non soddisfiamo il paradigma *HATEOAS* restituendo puntatori alle risorse ma cerchiamo il più possibile di restituire JSON e dati grezzi, usabili
 
+## Tipi di Persone
+Ogni persona è registrata nel sistema con i suoi dati anagrafici (uguali per tutti) e con il dettaglio del suo ruolo nel sistema:
+1. `Utente`: è l'utente registrato nel sistema che può inserire dati
+2. `Allenatore`: è uno degli allenatori di una Squadra (specifica di squadra)
+3. `Giocatore`: è uno dei giocatori di una Squadra (specifica di squadra)
+4. `Referente`: è uno dei referenti di una Squadra (specifica di squadra)
 
 # Strutture dati
 
-###  Esempio preso da un vecchio prodotto ProdottoJSON
-L'anagrafica di un singolo prodotto.
+## Problemi da risolvere
+- Negli indirizzi c'è bisogno di separare l'indirizzo, la località, il cap ecc..
+
+
+## Defaults
+- Tutti gli ID chiave primaria sono registrati col nome *id*
+- Tutti gli URL DEVONO ESSERE ASSOLUTI
+
+
+### `PersonaJSON`
+L'anagrafica di una persona registrata nel sistema.
 Contiene:
-- `integer` *id*: il codice del prodotto nel db
-- `string` *nome*: il nome del prodotto corrente
-- `string` *descrizione*: descrizione del prodotto
-- `string/url` *immagine*: indirizzo dell'immagine
-- `string` *tipomerceologico*: il tipo merceologico del prodotto
+- `integer` *id*: il codice della persona nel db
+- `string` *nome*: il nome della persona
+- `string` *cognome*: il cognome della persona
+- `string` *sesso*: il sesso della persona ('M' o 'F)
+- `string` *luogonascita*: il luogo di nascita
+- `datetime` *datanascita*: la data di nascita
+- `string` *indirizzo*: l'indirizzo della persona
+- `string` *email*: l'email della persona
+- `URL` *foto*: l'url della foto tessera della persona
+- `URL` *documento*: l'url della foto del documento della persona
+- `string` *telefono*: il numero di telefono della persona
+
 
 Esempio
 ```json
 {
   "id":1,
-  "nome":"Tonno in scatola",
-  "descrizione":"Tonno di mare inscatolato",
-  "immagine": "http://server/pics/tonno.jpg",
-  "tipomerceologico":"alimenti conservati"
-}
-```
-
-### ProdottoInBoxJSON -> estende `ProdottoJSON`
-Un prodotto in un box. 
-
-Oltre ai dati di `ProdottoJSON` contiene:
-- `string` *unitamisura*: unità di misura usata
-- `integer` *quantita*: valore della quantità in base all'unità di misura
-***DARIO: questa quantità forse deve essere float ... no?!?!***
-
-Esempio:
-```json
-{
-  "id":1,
-  "nome":"Tonno in scatola",
-  "descrizione":"Tonno di mare inscatolato",
-  "immagine": "http://server/pics/tonno.jpg",
-  "tipomerceologico":"alimenti conservati",
-  "unitamisura": "grammi",
-  "quantita": 500
-}
-```
-
-### ArProdottoJSON -> contiene molti `ProdottoJSON`
-L'anagrafica di una pluralità di prodotti. Semplicemente un array di `ProdottoJSON`.
-
-Esempio:
-```json
-{
-  [
-    {
-      "id":1,
-      "nome":"Tonno in scatola",
-      "descrizione":"Tonno di mare inscatolato",
-      "immagine": "http://server/pics/tonno.jpg",
-      "tipomerceologico":"alimenti conservati"
-    },
-    {
-      "id":2,
-      "nome":"Pasta corta",
-      "descrizione":"Penne, farfalla o altra pasta corta",
-      "immagine": "http://server/pics/pastacorta.jpg",
-      "tipomerceologico":"Paste alimentari"
-    }
-}
-```
-
-
-## Utente
-
-Le strutture dati che servono per interrogare e modificare gli utenti che usufruiscono di SpesaFatta.
-
-### UtenteJSON
-L'anagrafica di un utente inserito nel sistema.
-Contiene:
-- `integer` *id*: il codice dell'utente nel DB
-- `integer` *stato*: identificativo dello stato di registrazione ***serve?!***
-- `string` *nome*: nome dell'utente
-- `string` *cognome*: cognome dell'utente
-- `string` *telefono*: telefono dell'utente
-- `NegozioJSON` *negoziopreferito*: negozio preferito dell'utente (se c'è, senn)
-- `string` *cap*: codice di avviamento postale
-- `bit` *privacy*: vero o falso se ha rilasciato i permessi
-- `string` *username*: dell'utente nel sistema
-- `binary(64)` *password*: hash della password dell'utente
-
-Esempio
-```json
-{
-  "id":1,
-  "stato": 2,
   "nome":"Simone",
   "cognome":"Pascarosa",
-  "telefono": "12345667",
-  "negozio": 
-    {
-      "id":1,
-      "tiponegozio":"Supermercato",
-      "denominazione":"Gaggi",
-      "indirizzo": "Via Ruggero d'Andreotto, 19 - 06121 Perugia",
-      "lat": 43.111613,
-      "long": 12.377809,
-      "nomereferente": "Vitaliano Gaggi",
-      "telefonoreferente": "075347389514832",
-      "emailreferente": "vitaliano@gaggi.it",
-      "cap": "06121"
-    },
-  "cap": "06124",
-  "privacy": true,
-  "username": "simone.pascarosa",
-  "password": "8349dj2f4vjg4gcvrecfwd@#"  
+  "sesso": "M",
+  "luogonascita":"Perugia",
+  "datanascita":"1984-11-24",
+  "indirizzo":"Via della Concordia, 42",
+  "email":"simone.pascarosa@gmail.com",
+  "foto":"http://sportlab.cloud/starcup22/imgdb/simone.pascarosa_foto.jpg",
+  "documento":"http://sportlab.cloud/starcup22/imgdb/simone.pascarosa_documento.jpg",
+  "telefono":"3493731005"
 }
 ```
 
+### `UtenteJSON` -> estende `PersonaJSON`
+Un utente registrato nel sistema.
 
+Oltre ai dati di `PersonaJSON` contiene:
+- `integer` *id*: attenzione, l'*id* è dell'utente, non di persona
+- `integer` *persona_id*: il codice della persona nella entità persona
+- `string` *ruolo*: specifica di un ruolo particolare nel sistema (serve?!?!?)
+- `string` *nomeutente*: il nome utente
+- `string` *password*: la password (in chiaro???)
+- `GruppoJSON` *gruppo*: gruppo di appartenenza
+- `boolean` *amministratore*: gruppo di appartenenza
 
-## Ordine
-
-Le strutture dati che servono per interrogare e modificare gli ordini
-
-### OrdineJSON
-L'anagrafica di un singolo box generico.
-
-Contiene:
-- `integer` *id*: il codice dell'ordine, come registrato nel DB
-- `UtenteJSON` *utente*: l'utente che ha effettuato l'ordine
-- `NegozioJSON` *negozio*: il negozio in cui l'ordine è effettuato
-- `integer` *stato*: stato dell'ordine ( ***definire gli stati e i codici!*** )
-- `datetime` *dataordine*: nome del box con cui è conosciuto
-- `datetime` *dataritiro*: nome del box con cui è conosciuto
-- `datetime` *datafineritiro*: nome del box con cui è conosciuto
-- `string` *codiceritiro*: codice con cui l'utente può ritirare l'ordine 
-- `string` *note*: note eventuali per l'ordine
-- `ArBoxInOrdineJSON` *boxes*: i box ordinati
-
-Esempio
+Esempio:
 ```json
 {
   "id":1,
-  "utente":
-    {
-	  "id":1,
-	  "stato": 2,
-	  "nome":"Simone",
-	  "cognome":"Pascarosa",
-	    ...
-	},
-  "negozio": 
-    {
-      "id":1,
-      "tiponegozio":"Supermercato",
-      "denominazione":"Gaggi",
-        ...
-    },
-  "stato": 2,
-  "dataordine": "2020-04-17 18:05:23",
-  "dataritiro": "2020-04-18 08:00:00",
-  "dataordine": "2020-04-21 20:00:00",
-  "codiceritiro": "BO324L",
-  "note": "",
-  "boxes": 
-    [
-		...
-    ]
+  "nome":"Simone",
+  "cognome":"Pascarosa",
+  "sesso": "M",
+  "luogonascita":"Perugia",
+  "datanascita":"1984-11-24",
+  "indirizzo":"Via della Concordia, 42",
+  "email":"simone.pascarosa@gmail.com",
+  "foto":"http://sportlab.cloud/starcup22/imgdb/simone.pascarosa_foto.jpg",
+  "documento":"http://sportlab.cloud/starcup22/imgdb/simone.pascarosa_documento.jpg",
+  "telefono":"3493731005",
+  "persona_id":"1",
+  "ruolo":"root",
+  "nomeutente":"spasca",
+  "password":"mamicaPens1ket3LOdica",
+  "gruppo": {
+    "id":1,
+    "denominazione":"Oratorio Piergiorgio Frassati State Buoni se Potete",
+    "UP":9,
+    "ZP":2
+  },
+  "amministratore":true
 }
 ```
-
 
 
 
