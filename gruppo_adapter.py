@@ -11,3 +11,4 @@ def getGruppo (id):
         for gruppi in cursor.fetchall():
             print(gruppi)
 
+getGruppo(1)
