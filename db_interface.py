@@ -1,23 +1,19 @@
 from mysql.connector import connect, Error
-
-# Define DB connection auth data
-db_host =   "localhost"
-db_uname =  "webapi"
-db_upass =  "w3bap1"
-db_name =   "starcup22"
+import configparser
 
 def getConnection():
 # Returns the connection to the DB
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+
     try:
-        with connect(
-            host=db_host,
-            user=db_uname,
-            password=db_upass,
-            database=db_name
-        ) as conn:
-            return conn            
+        return connect(
+            host=config['database']['host'],
+            user=config['database']['user'],
+            password=config['database']['pass'],
+            database=config['database']['db']
+        )         
 
     except Error as e:
-        print(e)
         return None
 
