@@ -7,7 +7,7 @@ def getGruppo (id):
     connection = getConnection()
     
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM Gruppi")
+        cursor.execute("SELECT * FROM Gruppo")
         for gruppi in cursor.fetchall():
             print(gruppi)
 
