@@ -123,225 +123,51 @@ Esempio:
 
 # Risorse e verbi disponibili
 
-## Prodotti
+## Utente
 
-### /prodotti -> `ArProdottoJSON`
+### /gruppi -> `ArGruppoJSON`
 
-La risorsa gestisce una pluralità o il singolo prodotto.
+La risorsa gestisce una pluralità o il singolo gruppo parrocchiale.
 
 |   Verbi       | Arg | Descrizione | Response |
 | ------------- |-----|-------------|---------:|
-| `GET` | - |Restituisce l'anagrafica di tutti i prodotti |`ArProdottoJSON` |
-| `POST` | `ProdottoJSON`  senza id| Aggiunge un prodotto nel DB|  `ProdottoJSON`  |
+| `GET` | - |Restituisce l'anagrafica di tutti i gruppi parrocchiali |`ArGruppoJSON` |
+| `POST` | `GruppoJSON`  senza id| Aggiunge un gruppo nel DB|  `GruppoJSON`  |
 | `PUT`| - | - | - |
-| `DEL` | - | Elimina tutti i prodotti dalla lista, eliminando anche i relativi box che li contengono | `Response` |
+| `DEL` | - | **** Elimina tutti i gruppi parrocchiali, eliminando anche i relativi utenti e squadre | `Response` |
 
 
-### /prodotti/{id} -> `ProdottoJSON`
-Risorsa che gestisce un singolo prodotto specificato nell'ID nell'URL
+### /gruppi/{id} -> `GruppoJSON`
 
 |   Verbi       | Arg | Descrizione | Response |
 | ------------- |-----|-------------|---------:|
-| `GET` | - |Restituisce il singolo prodotto |`ProdottoJSON` |
+| `GET` | - |Restituisce il singolo gruppo |`GruppoJSON` |
 | `POST` | - | - | - |
-| `PUT`| `ProdottoJSON` | Modifica un prodotto | `Response` |
-| `DEL` | - | Elimina il prodotto dalla lista, eliminando tutti i box che contengono quel prodotto | `Response` |
+| `PUT`| `GruppoJSON` | Modifica un prodotto | `Response` |
+| `DEL` | - | Elimina il gruppo dalla lista, eliminando anche i relativi utenti e squadre| `Response` |
 
 
-## Box
-***ATTENZIONE QUESTI SONO I BOX GENERICI!***
-L'entità qualificante di questo progetto, descrive i dati contenuti nel DB per i box.
+### /gruppi/{id}/squadre -> `ArSquadraJSON`
 
-### /box -> `ArBoxJSON`
-
-La risorsa gestisce una pluralità di box.
+La risorsa gestisce una pluralità di squadre appartenenti allo stesso gruppo parrocchiale.
 
 |   Verbi       | Arg | Descrizione | Response |
 | ------------- |-----|-------------|---------:|
-| `GET` | - | Restituisce l'elenco di tutti i box generici | `ArBoxJSON` |
-| `POST`| `BoxJSON`  senza id| Aggiunge un box nel DB|  `BoxJSON` |
-| `PUT` | - | - | - |
-| `DEL` | - | Elimina tutti i box dalla lista | `Response` |
-
-
-### /box/:id -> `BoxJSON`
-
-La risorsa gestisce un singolo box generico (cioè non relativo ad un certo negozio).
-
-|   Verbi       | Arg | Descrizione | Response |
-| ------------- |-----|-------------|---------:|
-| `GET` | - |Restituisce l'anagrafica del box con quell'ID |`BoxJSON` |
-| `POST` | - | - |  - |
-| `PUT`| `BoxJSON`     | Modifica un box in lista | `Response` |
-| `DEL` | - | Elimina il box dalla lista | `Response` |
-
-
-### /box/{id}/prodotti -> `ArProdottoInBoxJSON`
-Restituisce solo l'array di prodorri di un box (che comunque è già contenuto nel JSON del box. Questo serve ad avere l'array diretto.
-|   Verbi       | Arg | Descrizione | Response |
-| ------------- |-----|-------------|---------:|
-| `GET` | - |Restituisce l'elenco dei prodotti nel box |`ArProdottoInBoxJSON` |
-| `POST` | `ProdottoInBoxJSON` | Aggiunge un prodotto ai prodotti nel box |  - |
-| `PUT`| `ProdottoInBoxJSON`     | Modifica le quantità di un prodotto nel box | `Response` |
-| `PUT`| `ArProdottoInBoxJSON` | Rimpiazza la lista di prodotti del box con quella fornita | `Response` |
-| `DEL` |  | Elimina il box dalla lista | `Response` |
-
-
-### /box/{id}/negozi -> `ArNegozioJSON`
-Restituisce l'array di negozi in cui un box è disponibile.
-
-|   Verbi       | Arg | Descrizione | Response |
-| ------------- |-----|-------------|---------:|
-| `GET` | - |Restituisce l'elenco dei negozi in cui il box è disponibile |`ArNegozioJSON` |
-| `POST` | - | - |  - |
+| `GET` | - |Restituisce l'elenco di tutte le squadre di quel gruppo |`ArSquadraJSON` |
+| `POST` | `SquadraJSON`  senza id| Aggiunge una nuova squadra per quel gruppo|  `SquadraJSON`  |
 | `PUT`| - | - | - |
-| `DEL` | - | - | - |
+| `DEL` | - |Elimina tutte le squadre di quel gruppo | `Response` |
 
 
+### /gruppi/{id}/utenti -> `ArUtenteJSON`
 
-## Negozio
-
-Per la gestione del negozio e dei box che i negozi offrono.
-
-
-
-### /negozio -> `ArNegozioJSON`
-Restituisce tutti i negozi nel sistema
+La risorsa gestisce una pluralità di utenti appartenenti allo stesso gruppo parrocchiale.
 
 |   Verbi       | Arg | Descrizione | Response |
 | ------------- |-----|-------------|---------:|
-| `GET` | - | Restituisce l'elenco di tutti i negozi | `ArNegozioJSON` |
-| `POST`| `NegozioJSON`  senza id| Aggiunge un negozio nel DB|  `NegozioJSON` |
-| `PUT` | - | - | - |
-| `DEL` | - | Elimina tutti i negozi dalla lista, e tutti i relativi box | `Response` |
+| `GET` | - |Restituisce l'elenco di tutti gli utenti di quel gruppo |`ArUtenteJSON` |
+| `POST` | `UtenteJSON`  senza id| Aggiunge un nuovo utente per quel gruppo|  `UtenteJSON`  |
+| `PUT`| - | - | - |
+| `DEL` | - |Elimina tutte gli utenti di quel gruppo | `Response` |
 
 
-### /negozio/{id} -> `NegozioJSON`
-
-La risorsa gestisce un singolo negozio.
-
-|   Verbi       | Arg | Descrizione | Response |
-| ------------- |-----|-------------|---------:|
-| `GET` | - |Restituisce l'anagrafica del negozio con quell'ID |`NegozioJSON` |
-| `POST` | - | - |  - |
-| `PUT`| `NegozioJSON` | Modifica un negozio in lista, lasciando inalterati i suoi box | `Response` |
-| `DEL` | - | Elimina il negozio dalla lista, con i relativi box | `Response` |
-
-
-### /negozio/{id}/boxes -> `ArBoxInNegozioJSON`
-
-Gestisce i box registrati per quel negozio.
-
-|   Verbi       | Arg | Descrizione | Response |
-| ------------- |-----|-------------|---------:|
-| `GET` | - | Restituisce la lista dei box di quel negozio | `BoxInNegozioJSON` |
-| `POST` | `BoxInNegozioJSON` senza negozio | Aggiunge il box al negozio con la relativa disponibilità e prezzo | `Response` |
-| `PUT`| `BoxInNegozioJSON` | Modifica la disponibilità o il prezzo di un box nel negozio | `Response` |
-| `DEL` | - | - | `Response` |
-
-
-### /negozio/{id}/boxes/{id_boxinnegozio} -> `BoxInNegozioJSON`
-
-Gestisce i box registrati per quel negozio.
-
-|   Verbi       | Arg | Descrizione | Response |
-| ------------- |-----|-------------|---------:|
-| `GET` | - | Restituisce quel box in negozio con la sua disponibilità e il suo prezzo | `BoxInNegozioJSON` |
-| `POST` | - | - | - |
-| `PUT`| `BoxInNegozioJSON` | Modifica la disponibilità o il prezzo di questo box nel negozio | `Response` |
-| `DEL` | - | Rimuove questo box tra quelli disponibili per il negozio | `Response` |
-
-
-### /negozio/cap/{cap} -> `ArNegozioJSON`
-Restituisce tutti i negozi che si trovano in una certa zona
-
-|   Verbi       | Arg | Descrizione | Response |
-| ------------- |-----|-------------|---------:|
-| `GET` | - | Restituisce l'elenco di tutti i negozi con quel CAP | `ArNegozioJSON` |
-
-
-
-## Ordine
-
-Per la gestione degli ordini dei clienti.
-
-
-
-### /ordine-> `ArOrdineJSON`
-Restituisce tutti gli ordini nel sistema
-
-|   Verbi       | Arg | Descrizione | Response |
-| ------------- |-----|-------------|---------:|
-| `GET` | - | Restituisce l'elenco di tutti gli ordini | `ArOrdineJSON` |
-| `POST`| `OrdineJSON`  senza id| Inserisce un nuovo ordine |  `OrdineJSON` |
-| `PUT` | - | - | - |
-| `DEL` | - | Elimina tutti gli ordini nel sistema | `Response` |
-
-
-### /ordine/{id} -> `OrdineJSON`
-
-La risorsa gestisce un singolo ordine.
-
-|   Verbi       | Arg | Descrizione | Response |
-| ------------- |-----|-------------|---------:|
-| `GET` | - | Restituisce l'ordine di codice id |`OrdineJSON` |
-| `POST` | - | - |  - |
-| `PUT`| `OrdineJSON` | Modifica un ordine in lista | `Response` |
-| `DEL` | - | Elimina l'ordine dal sistema | `Response` |
-
-
-### /ordine/{id}/boxes -> `ArBoxInOrdineJSON`
-
-Gestisce i box registrati in un certo ordine.
-
-|   Verbi       | Arg | Descrizione | Response |
-| ------------- |-----|-------------|---------:|
-| `GET` | - | Restituisce la lista dei box in quell'ordine | `BoxInOrdineJSON` |
-| `POST` | `BoxInOrdineJSON` | Aggiunge il box all'ordine | `Response` |
-| `PUT`| `BoxInNegozioJSON` | Modifica la quantita di quel box nell'ordine | `Response` |
-| `DEL` | - | - | `Response` |
-
-
-
-### /ordine/{id}/boxes/{idboxinordine} -> `BoxInOrdineJSON`
-
-Gestisce un certo box in un certo ordine.
-
-|   Verbi       | Arg | Descrizione | Response |
-| ------------- |-----|-------------|---------:|
-| `GET` | - | Restituisce il box in quell'ordine | `BoxInOrdineJSON` |
-| `POST` | - | - | - |
-| `PUT`| `BoxInOrdineJSON` | Modifica la quantita di quel box nell'ordine | `Response` |
-| `DEL` | - | Cancella la prenotazione di questo specifico box nell'ordine | `Response` |
-
-
-### /ordine/data/{data} -> `ArOrdineJSON`
-
-Gestisce gli ordini di una certa data.
-
-|   Verbi       | Arg | Descrizione | Response |
-| ------------- |-----|-------------|---------:|
-| `GET` | - | Restituisce gli ordini di una certa data | `ArOrdineJSON` |
-| `DEL` | - | Cancella gli ordini di una certa data | `Response` |
-
-
-### /ordine/oggi -> `ArOrdineJSON`
-Restituisce gli ordini della data odierna.
-Una scorciatoia per: `/ordine/data/{datacorrente}`
-
-
-### /ordine/da/{data}/a/{data} -> `ArOrdineJSON`
-
-Gestisce gli ordini di una certo intervallo di date.
-
-|   Verbi       | Arg | Descrizione | Response |
-| ------------- |-----|-------------|---------:|
-| `GET` | - | Restituisce gli ordini di un certo intervallo di date | `ArOrdineJSON` |
-| `DEL` | - | Cancella gli ordini di questo intervallo | `Response` |
-
-
-/utente/:id
-/utente/:telefono
-/utente/?/ordini
-
-/ordine/ritiro
