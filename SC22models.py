@@ -3,7 +3,7 @@ class SC22Model:
 
     # Default constructor that puts the result from SQL query inside content attribute
     def __init__(self, ):
-        
+        pass
 
     # Depth attribute helps to correctly indent the JSON to be more readable
     def toJSON(self,depth=1):
@@ -26,10 +26,12 @@ class Campo(SC22Model):
     pass
 
 class Gruppo(SC22Model):
-    def __init__(self, )
+    def __init__(self):
+        pass
 
     @classmethod
-    def buildFromSql(
+    def buildFromSql(cls):
+        pass
 
 
 

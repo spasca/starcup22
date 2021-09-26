@@ -1,7 +1,6 @@
 # gruppo_adapter.py
 # Adapter that exports DB query's to the WebAPI resource controller
 # 
-import 
 from db_interface import getConnection
 
 
