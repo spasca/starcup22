@@ -1,25 +1,21 @@
-# This fixes import error
-import os, sys
-dir_path = os.path.dirname(os.path.realpath(__file__))
-parent_dir_path = os.path.abspath(os.path.join(dir_path, os.pardir))
-sys.path.insert(0, parent_dir_path)
-
 from models.Model import Array, Model
 
 class Gruppo(Model):
     # Build a single Gruppo resource from the data 
     # of a single SQL query result.
-    # head: a tuple with the heading of the query
-    # data: a tuple with the data corresponding to the heading
-    def __init__(self, head, data):
-        # Define deafult values for attributes
-        self.IdGruppo = 0
-        self.Denominazione = ""
-        self.UP = 0
-        self.ZP = 0
+    # dict_data: a dictionary with the query data in the format field: value
+    def __init__(self, dict_data):
+        
+        # !!! WE REALLY DON'T NEED TO DEFINE DEAFULT VALUES HERE
+        # # Define deafult values for attributes
+        # self.IdGruppo = 0
+        # self.Denominazione = ""
+        # self.UP = 0
+        # self.ZP = 0
+        
         # Check and assign the values of the current entry in the query
-        for i in range(len(head)):
-            if head[i] == "IdGruppo":           self.IdGruppo = data[i]
-            elif head[i] == "Denominazione":    self.Denominazione = data[i]
-            elif head[i] == "UP":               self.UP = data[i]
-            elif head[i] == "ZP":               self.ZP = data[i]
+        for k, v in dict_data.items():
+            if k.lower() == "idgruppo":           self.IdGruppo = v
+            elif k.lower() == "denominazione":    self.Denominazione = v
+            elif k.lower() == "up":               self.UP = v
+            elif k.lower() == "zp":               self.ZP = v

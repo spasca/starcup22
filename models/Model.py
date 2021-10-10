@@ -21,22 +21,29 @@ class Model:
 
         return jsonstring
 
+
+    # Service method to convert a list of two tuples containing fields and data from SQL query
+    # to a dictionary in the format 'field1': 'data1' etc.
+    @staticmethod
+    def dictFromQueryTuples(head, data):
+        return {head[i]: data[i] for i in range(len(head))}
+
     # Polimorphic constructor of a single or a multiple resource
     # Uses polimorphically the __init__ constructor of the relative class
     # Returns a list with one or more objects
     @classmethod
-    def buildFromQuery(cls, query):
+    def buildFromQuery(cls, query): # 'cls' is the specific Class of the caller (Gruppo, Giocatore ...)
         # Query must be at least a list of 2 tuples: heading ad one row of data
         if len(query) < 2:
             raise Exception()
         # If there's just one entry (note: the first tuple of the query is the heading!) so query is a list of 2 tuples
         if len(query) == 2:
-            return cls(query[0], query[1])
+            return cls(Model.dictFromQueryTuples(query[0], query[1]))  # Create the object with the specific Class constructor
         # If there's more than one rows in the result (note: the first tuple of the query is the heading!)
         elif len(query) > 2:
             resultArray = list()
             for i in range(len(query)-1):
-                resultArray.append(cls(query[0], query.pop(1)))
+                resultArray.append(cls(Model.dictFromQueryTuples(query[0], query.pop(1))))
             return Array(resultArray)
 
 class Array:
@@ -51,5 +58,5 @@ class Array:
 
         return jsonstring
 
-    def __init__(self, list):
+    def __init__(self, list: list):
         self.content = list

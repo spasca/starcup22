@@ -19,13 +19,16 @@ Gruppo resource properties:
 @app.route("/gruppo", method=["GET"])
 def getGruppo():
     # Authentication and/or authorization
-    response = gruppo.getGruppo()
-
+    response = Gruppo.buildFromQuery(getGruppi())
+    g1 = addGiocatore(Giocatore.fromJSON(txt))
+              
     # Error handling
 
     if not response:
         return "{}"
     return response
+
+
 
 
 @app.route("/gruppo", method=["POST"])
