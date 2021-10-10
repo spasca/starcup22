@@ -121,6 +121,173 @@ Esempio:
 
 
 
+
+## Lista endpoint
+
+Quelle che seguono sono tutte le richieste che gli adapters dovrebbero poter soddisfare, per consentire una gestione totale e intuitiva del database.
+
+Può darsi che in futuro ci accorgeremo che qualcuno di questi non serve, quelli a cui si darebbe meno fiducia sono segnati con "???".
+Per il momento possiamo ignorarli.
+
+<details>
+  <summary> Vedi i dubbi rimasti </summary>
+
+(Cosa che non mi è chiara:
+per stampare la classifica di un girone si prendono tutte le partite del girone e si ricalcolano i punteggi di tutte le squadre ogni singola volta..?
+Non vedo dati di classifica salvati da nessuna parte, quindi credo sia così...
+
+Alternativa:
+salvare in Posizione tutti i dati di classifica.
+E' un luogo adatto perché rappresenta la squadra in quanto partecipante ad un dato torneo, e tutti i dati di classifica sono in effetti legati al torneo.
+Quindi Posizione potrebbe avere i campi: "Giocate","Vittorie","Pareggi","Sconfitte","GF","GS","Punti".
+
+Vantaggio:
+molto più semplice stampare le classifiche!!
+
+Pecca:
+i dati della classifica sono già contenuti nell'insieme delle partite giocate nel girone/torneo.
+A: sarebbe una ripetizione.
+B: bisognerebbe scrivere i metodi di modifica degli oggetti "Partita" in modo che, se si cambia/corregge un dato significativo di una partita,
+anche i dati nelle Posizioni coinvolte dalla partita siano corretti di conseguenza.)
+
+(Spunto:
+aggiungere nel database una Tabella per i Gironi?
+Conterrebbe i campi: "IdGirone" INT, "CodTorneo" INT, "NomeGirone" CHAR(1).
+I campi "CodTorneo" INT e "Girone" CHAR(1) di Posizione andrebbero sostutiti con un campo "CodGirone" INT.
+Dal punto di vista logico mi sembra un lieve miglioramento.
+Dal punto di vista pratico credo che sia un lieve peggioramento nella sintassi delle interrogazioni.)
+
+(Le risorse "aggiuntive" non sono tra quelle principali individuate dal Pasca per inizializzare il sistema di iscrizioni, perché giustamente si usano dopo.
+Però dovremo affrontarle prima o poi.)
+
+</details>
+
+Per ogni risorsa è possibile richiedere:
+ - La lista completa delle risorse di quel tipo nel database
+ - La singola risorsa corrispondente a un id dato
+ - La lista di tutte le risorse figlie di una data risorsa madre, e queste sono le voci di tipo "da"
+ - Una delle liste precedenti filtrata tramite un altro parametro, che può essere:
+   - un possibile valore di un campo all'interno alla risorsa
+   - l'id di una risorsa collegata
+   e queste sono le voci di tipo "per"
+
+<details>
+  <summary> Visualizza lista completa </summary>
+  
+ - Gruppi (`Gruppo`)
+   - Lista (/gruppi)
+   - da id (/gruppo/{id})
+
+ - Utenti (`Persona` + `Utente`)
+   - Lista (/utenti)
+   - da id (/utente/{id})
+   - da `Gruppo` (/utenti/gruppo/{id_gruppo}) (/gruppo/{id_gruppo}/utenti)
+
+ - Arbitri (`Persona` + `Arbitro`)
+   - Lista (/arbitri)
+   - da id (/arbitro/{id})
+
+ - Elementi (`Persona` + `RuoloInSquadra`) (PROPOSTA alternativa, da valutare)
+   - Lista (/elementi)
+   - da id (/elemento/{id})
+   - da `Squadra` (/elementi/squadra/{id_squadra}) (/squadra/{id_squadra}/elementi)
+   - da `Gruppo` ??? (/elementi/gruppo/{id_gruppo}) (/gruppo/{id_gruppo}/elementi)
+   - per `Ruolo` (/[...]?ruolo={id_ruolo}) (id_ruolo in ["1", "2", "3"])
+ - <details>
+  <summary> Visualizza idea originale </summary>
+
+ - Giocatori (`Persona` + `RuoloInSquadra`)
+   - Lista (/giocatori)
+   - da id (/giocatore/{id})
+   - da `Squadra` (/giocatori/squadra/{id_squadra}) (/squadra/{id_squadra}/giocatori)
+   - da `Gruppo` ??? (/giocatori/gruppo/{id_gruppo}) (/gruppo/{id_gruppo}/giocatori)
+
+ - Allenatori (`Persona` + `RuoloInSquadra`)
+   - Lista (/allenatori)
+   - da id (/allenatore/{id})
+   - da `Squadra` (/allenatori/squadra/{id_squadra}) (/squadra/{id_squadra}/allenatori)
+   - da `Gruppo` ??? (/allenatori/gruppo/{id_gruppo}) (/gruppo/{id_gruppo}/allenatori)
+
+ - Referenti (`Persona` + `RuoloInSquadra`) (Serve???)
+   - Lista (/referenti)
+   - da id (/referente/{id})
+   - da `Squadra` (/referenti/squadra/{id_squadra}) (/squadra/{id_squadra}/referenti)
+   - da `Gruppo` (/referenti/gruppo/{id_gruppo}) (/gruppo/{id_gruppo}/referenti)
+  </details>
+
+ - Partite (`Partita`)
+   - Lista (/partite)
+   - da id (/partita/{id})
+   - da `Torneo` (/partite/torneo/{id_torneo}) (/torneo/{id_torneo}/partite)
+   - da `Girone` (/partite/girone/{id_girone}) (/girone/{id_girone}/partite)
+   - da `Campo` (/partite/campo/{id_campo}) (campo/{id_campo}/partite)
+   - da `Squadra` ??? (/partite/squadra/{id_squadra}) (squadra/{id_squadra}/partite)
+   - da `Arbitro` ??? (/partite/arbitro/{id_arbitro}) (arbitro/{id_arbitro}/partite) 
+   - per Data e Fascia Oraria ??? (/[...]?data={data}&inizio={ora_inizio}&fine={ora_fine}) (data="YYYYMMDD", ora_inizio,ora_fine="hhmm")
+   - per Nascosta ??? (/[...]?nascosta={nascosta}) (nascosta in ["True", "False"])
+   - per `Torneo` ??? (/[...]?torneo={id_torneo})
+
+ - Squadre (`Squadra`)
+   - Lista (/squadre)
+   - da id (/squadra/{id})
+   - da `Utente` (/squadre/utente/{id_utente}) (/utente/{id_utente}/squadre)
+   - da `Gruppo` (/squadre/gruppo/{id_gruppo}) (/gruppo/{id_gruppo}/squadre)
+   - da `Partita` (/squadre/partita/{id_partita}) (/partita//{id_partita}/squadre)
+   - da `Torneo` (/squadre/torneo/{id_torneo}) (/partita//{id_partita}/squadre)
+   - (ipotesi) da `Girone` (/squadre/girone/{id_girone}) (/partita//{id_girone}/squadre)
+     - (altrimenti) per Girone (/[...]?girone={id_girone}) (vedi dubbi sopra. Si potrebbe anche definire endpoint appositi, impropriamente: Girone non è una risorsa)
+<details>
+  <summary> Risorse aggiuntive </summary>
+
+ - Gironi (`Girone`) (Serve farla???)
+   - Lista (/gironi)
+   - da id (/girone/{id})
+   - da `Torneo` (/gironi/torneo/{id_torneo}) (/torneo/{id_torneo}/gironi)
+ 
+ - Goal (`Goal` + `RuoloInSquadra` + `Persona` + `Squadra`)
+   - Lista (/goals)
+   - da id (/goal/{id})
+   - da `Partita` (/goals/partita/{id_partita}) (/partita/{id_partita}/goals)
+   - da `Giocatore` ??? (/goals/giocatore/{id_giocatore}) (/giocatore/{id_giocatore}/goals)
+
+ - Tornei (`Torneo`)
+   - Lista (/tornei)
+   - da id (/torneo/{id})
+   - da `Squadra` ??? (/tornei/squadra/{id_squadra}) (/squadra/{id_squadra}/tornei)
+
+ - Pagamenti (`Pagamento`)
+   - Lista (/pagamenti)
+   - da id (/pagamento/{id})
+   - da `Squadra` (/pagamenti/squadra/{id_squadra}) (/squadra/{id_squadra}/pagamenti)
+   - da `Utente` ??? (/pagamenti/utente/{id_utente}) (/utente/{id_utente}/pagamenti)
+   - da `Gruppo` ??? (/pagamenti/gruppo/{id_gruppo}) (/gruppo/{id_gruppo}/pagamenti)
+
+ - Campi (`Campo`)
+   - Lista (/campi)
+   - da id (/campo/{id})
+
+ - Posizioni (`Posizione`) (Serve???)
+   - Lista (/posizioni)
+   - da id (/posizione/{id})
+   - da `Torneo` ??? (/posizioni/torneo/{id_torneo}) (/torneo/{id_torneo}/posizioni)
+   - da `Girone` ??? (/posizioni/girone/{id_girone}) (/girone/{id_girone}/posizioni)
+
+ - Persone (`Persona`) (Serve???)
+   - Lista (/persone)
+   - da id (/persona/{id})
+
+ - Ruoli (`Ruolo`) (Serve???)
+   - Lista (/ruoli)
+   - da id (/ruolo/{id})
+
+ - ConstraintsSquadra ???
+ - ConstraintsGruppo ???
+  </details>
+  </details>
+
+
+
+
 # Risorse e verbi disponibili
 
 ## Utente
