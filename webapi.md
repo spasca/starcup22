@@ -161,6 +161,7 @@ Dal punto di vista pratico credo che sia un lieve peggioramento nella sintassi d
 Però dovremo affrontarle prima o poi.)
 
 </details>
+<br><br>
 
 Per ogni risorsa è possibile richiedere:
  - La lista completa delle risorse di quel tipo nel database
@@ -171,6 +172,7 @@ Per ogni risorsa è possibile richiedere:
    - l'id di una risorsa collegata
    e queste sono le voci di tipo "per"
 
+<br>
 <details>
   <summary> Visualizza lista completa </summary>
   
@@ -193,26 +195,25 @@ Per ogni risorsa è possibile richiedere:
    - da `Squadra` (/elementi/squadra/{id_squadra}) (/squadra/{id_squadra}/elementi)
    - da `Gruppo` ??? (/elementi/gruppo/{id_gruppo}) (/gruppo/{id_gruppo}/elementi)
    - per `Ruolo` (/[...]?ruolo={id_ruolo}) (id_ruolo in ["1", "2", "3"])
- - <details>
+<details>
   <summary> Visualizza idea originale </summary>
 
- - Giocatori (`Persona` + `RuoloInSquadra`)
-   - Lista (/giocatori)
-   - da id (/giocatore/{id})
-   - da `Squadra` (/giocatori/squadra/{id_squadra}) (/squadra/{id_squadra}/giocatori)
-   - da `Gruppo` ??? (/giocatori/gruppo/{id_gruppo}) (/gruppo/{id_gruppo}/giocatori)
-
- - Allenatori (`Persona` + `RuoloInSquadra`)
-   - Lista (/allenatori)
-   - da id (/allenatore/{id})
-   - da `Squadra` (/allenatori/squadra/{id_squadra}) (/squadra/{id_squadra}/allenatori)
-   - da `Gruppo` ??? (/allenatori/gruppo/{id_gruppo}) (/gruppo/{id_gruppo}/allenatori)
-
- - Referenti (`Persona` + `RuoloInSquadra`) (Serve???)
-   - Lista (/referenti)
-   - da id (/referente/{id})
-   - da `Squadra` (/referenti/squadra/{id_squadra}) (/squadra/{id_squadra}/referenti)
-   - da `Gruppo` (/referenti/gruppo/{id_gruppo}) (/gruppo/{id_gruppo}/referenti)
+ - Vari tipi di Persona
+   - Giocatori (`Persona` + `RuoloInSquadra`)
+     - Lista (/giocatori)
+     - da id (/giocatore/{id})
+     - da `Squadra` (/giocatori/squadra/{id_squadra}) (/squadra/{id_squadra}/giocatori)
+     - da `Gruppo` ??? (/giocatori/gruppo/{id_gruppo}) (/gruppo/{id_gruppo}/giocatori)
+   - Allenatori (`Persona` + `RuoloInSquadra`)
+     - Lista (/allenatori)
+     - da id (/allenatore/{id})
+     - da `Squadra` (/allenatori/squadra/{id_squadra}) (/squadra/{id_squadra}/allenatori)
+     - da `Gruppo` ??? (/allenatori/gruppo/{id_gruppo}) (/gruppo/{id_gruppo}/allenatori)
+   - Referenti (`Persona` + `RuoloInSquadra`) (Serve???)
+     - Lista (/referenti)
+     - da id (/referente/{id})
+     - da `Squadra` (/referenti/squadra/{id_squadra}) (/squadra/{id_squadra}/referenti)
+     - da `Gruppo` (/referenti/gruppo/{id_gruppo}) (/gruppo/{id_gruppo}/referenti)
   </details>
 
  - Partite (`Partita`)
