@@ -135,12 +135,14 @@ Per il momento possiamo ignorarli.
 (Cosa che non mi è chiara:
 per stampare la classifica di un girone si prendono tutte le partite del girone e si ricalcolano i punteggi di tutte le squadre ogni singola volta..?
 Non vedo dati di classifica salvati da nessuna parte, quindi credo sia così...
+
 *Don Simo*: **Si, ogni volta vengono ricalcolati i risultati (potremmo fare una piccola cache/proxy per questa richiesta così da non doverla calcolare ad ogni request**)
 
 Alternativa:
 salvare in Posizione tutti i dati di classifica.
 E' un luogo adatto perché rappresenta la squadra in quanto partecipante ad un dato torneo, e tutti i dati di classifica sono in effetti legati al torneo.
 Quindi Posizione potrebbe avere i campi: "Giocate","Vittorie","Pareggi","Sconfitte","GF","GS","Punti".
+
 *Don Simo*: **No, la classifica va calcolata, altrimenti è ridondante e dovremmo assicurare di tenere sempre aggiornati questi dati sul DB. Soluzione--> fare una cache della richiesta di ricalcolo della classifica, così invece che fare la query ad ogni richiesta, magari tiene in cache la richiesta e la fa una volta al minuto o più.**)
 
 Vantaggio:
@@ -158,6 +160,7 @@ Conterrebbe i campi: "IdGirone" INT, "CodTorneo" INT, "NomeGirone" CHAR(1).
 I campi "CodTorneo" INT e "Girone" CHAR(1) di Posizione andrebbero sostutiti con un campo "CodGirone" INT.
 Dal punto di vista logico mi sembra un lieve miglioramento.
 Dal punto di vista pratico credo che sia un lieve peggioramento nella sintassi delle interrogazioni.)
+
 *Don Simo*: **Valutiamo insieme questa cosa ... ci devo pensare un attimo ... mi sembra però intelligente come analisi**
 
 (Le risorse "aggiuntive" non sono tra quelle principali individuate dal Pasca per inizializzare il sistema di iscrizioni, perché giustamente si usano dopo.
