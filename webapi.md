@@ -144,6 +144,8 @@ E' un luogo adatto perché rappresenta la squadra in quanto partecipante ad un d
 Quindi Posizione potrebbe avere i campi: "Giocate","Vittorie","Pareggi","Sconfitte","GF","GS","Punti".
 
 *Don Simo*: **No, la classifica va calcolata, altrimenti è ridondante e dovremmo assicurare di tenere sempre aggiornati questi dati sul DB. Soluzione--> fare una cache della richiesta di ricalcolo della classifica, così invece che fare la query ad ogni richiesta, magari tiene in cache la richiesta e la fa una volta al minuto o più.**)
+  
+*Xzy*: **Ok. Invece che a intervalli di tempo si potrebbe anche ricalcolarla ogni volta che viene modificata una Partita nel database, mi sembra più pulito. La mettiamo in un file tendenzialmente statico, immagino: tipo un json?**
 
 Vantaggio:
 molto più semplice stampare le classifiche!!
@@ -203,6 +205,7 @@ Per ogni risorsa è possibile richiedere:
    - per `Ruolo` (/[...]?ruolo={id_ruolo}) (id_ruolo in ["1", "2", "3"])
 
 *Don Simo*: **Ho capito il motivo della tua proposta e propongo di accoglierla cambiando il nome da Elementi a Componenti, mi sembra più comprensibile.**
+*Xzy*: **Ho usato un sinonimo perché React, come hai visto, ha cose che si chiamano Componenti; ma andrebbe bene anche chiamarli Componenti, sarà difficile fare confusione.**
 
 
 <details>
