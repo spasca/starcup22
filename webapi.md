@@ -27,6 +27,28 @@ Server addr:  77.81.229.90
 2. Tutti gli URL restituiti dalla nostra API sono **ASSOLUTI**
 3. Non soddisfiamo il paradigma *HATEOAS* restituendo puntatori alle risorse ma cerchiamo il più possibile di restituire JSON e dati grezzi, usabili
 
+## Gestione degli errori
+
+### Codici di stato
+
+Nel nostro progetto useremo gli status code HTTP per la gestione degli errori.
+
+1. Codici di successo: codice `2xx`
+  * `200`: OK, l'azione richiesta ha avuto successo
+  * `201`: Created, una nuova risorsa è stata creata
+  * `202`: Accepted, la richiesta è stata ricevuta ma non sono state fatte modifiche
+  * `204`: Non Content, la richiesta è stata eseguita con successo ma la risposta non ha contenuto (come dopo una DELETE)
+  
+2. Codici di errore: codice `4xx` e `5xx`
+  * `400`: Bad Request, la richiesta non è conforme
+  * `401`: Unauthorized, il client non ha autorizzazione ad eseguire la operazione richiesta
+  * `404`: Not Found, la risorsa richiesta non è stata trovata
+  * `415`: Unsupported Media Type, i dati spediti sono in un formato non supportato (ad es. XML e non JSON)
+  * `422`: Unprocessable Entity, i dati sono ben formattati ma contengono dati invalidi o mancanti
+  * `500`: Internal Server Error, il server ha sollevato un errore nel processare la richiesta
+  
+Se il sistema emette uno dei condici di errore, il contenuto del payload JSON conterrà un campo 'error' con una stringa che descrive l'errore.
+
 ## Tipi di Persone
 Ogni persona è registrata nel sistema con i suoi dati anagrafici (uguali per tutti) e con il dettaglio del suo ruolo nel sistema:
 1. `Utente`: è l'utente registrato nel sistema che può inserire dati
