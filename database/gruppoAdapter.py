@@ -47,7 +47,7 @@ def getGruppo (id: int) -> Gruppo:
         # ! Note that cursor.fetchall() returns a list of tuples
         data = cursor.fetchone()
         
-        res_gruppo = Gruppo(head, data) 
+        res_gruppo = Gruppo(dict(zip(head, data)))
         
         return res_gruppo
     except AttributeError as e:
