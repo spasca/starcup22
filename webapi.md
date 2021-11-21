@@ -49,6 +49,46 @@ Nel nostro progetto useremo gli status code HTTP per la gestione degli errori.
   
 Se il sistema emette uno dei condici di errore, il contenuto del payload JSON conterrà un campo 'error' con una stringa che descrive l'errore.
 
+## Autenticazione e Autorizzazioni
+
+### Protocollo di autenticazione
+- L'utente richiede la pagina del login
+- Viene stabilita la connessione https
+- L'utente inserisce `IdUtente` e `Password`
+- Il server verifica se l'hash della pw inserita corrisponde a quello conservato in memoria per quell'utente
+- Se la verifica ha successo, il server spedisce all'utente un `Token` contenente anche un CodiceAccesso VARCHAR(32) casuale, di fatto inizializzando una sessione.
+   Di questo `Token`, il server conserva un hash (NOTA: in un campo della tabella "UTENTE"? Oppure in un file esterno al database?) e l'orario di emissione.
+   DOMANDA: Nel caso in cui l'utente risulti già loggato con un altro dispositivo, come gestiamo la cosa?
+     - Rifiutiamo il tentativo di connessione più recente?
+     - Forziamo la disconnessione del dispositivo precedentemente collegato sostituendo il vecchio Token con uno nuovo?
+     - Consentiamo che a un singolo utente siano associati più Token, permettendo connessioni multiple?
+
+### Protocolli di sessione
+- L'utente invia delle richieste, ogni volta includendo nella richiesta https il `Token` ottenuto in fase di autenticazione
+- Il server controlla, in questo ordine, che:
+  - l'hash del `Token` corrisponda a quello conservato in memoria per quell'utente
+    - (se questo controllo è positivo, l'orario di "ultimo utilizzo" del Token viene aggiornato. Altrimenti l'utente viene portato alla pagina di login)
+  - l'utente sia autorizzato a compiere l'operazione richiesta, controllando `Ruolo` (NOTA: qui vorrei che Ruolo fosse un INT), `IdGruppo` e `IdUtente` contenuti nel `Token`
+    - (questo controllo dovrebbe sempre riuscire positivo per le operazioni di modifica dei dati, se programmiamo bene l'interfaccia, ma serve anche per evitare frodi)
+    - (questo controllo generalmente serve proprio a costruire la risposta che il server darà all'utente)
+- Quindi il server esegue eventualmente l'operazione e spedisce all'utente una risposta o un errore
+
+### Struttura dei token
+I `Token` sono del tipo:
+```
+                         "XXXX_XXX_X_TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT"
+                             ^   ^ ^                                ^
+                             |   | |                                |
+ - IdUtente       -----------+   | |                                |
+ - IdGruppo       ---------------+ |                                |
+ - Ruolo          -----------------+                                |
+ - CodiceAccesso  --------------------------------------------------+
+ ```
+
+### Disconnessione degli utenti
+- Quando un utente esegue il logout viene portato a una schermata di saluto, e il `Token` associato all'utente/dispositivo viene rimosso
+- Periodicamente il server elimina gli hash dei `Token` che non vengono utilizzati da una certa quantità di tempo, di fatto disconnettendo il relativo utente/dispositivo
+
 ## Tipi di Persone
 Ogni persona è registrata nel sistema con i suoi dati anagrafici (uguali per tutti) e con il dettaglio del suo ruolo nel sistema:
 1. `Utente`: è l'utente registrato nel sistema che può inserire dati
