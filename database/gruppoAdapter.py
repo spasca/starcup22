@@ -2,6 +2,10 @@
 # Adapter that exports DB query's to the WebAPI resource controller
 # 
 
+import mysql.connector
+import pydoc
+#s=mysql.connector.__file__
+#s+=pydoc.render_doc(mysql.connector)
 from mysql.connector import Error
 
 from database.db_interface import getConnection
@@ -17,8 +21,13 @@ sql_stmts = {
     'delGruppo': 'DELETE FROM `gruppo` WHERE IdGruppo = %s'
 }
 
+def getGruppi():
+    return  s
+
+
 # Returns the result for the query (a list of tuples): the first is the column heading
 def getGruppi () -> Array:
+    return []
     try:
         conn = getConnection()
         cursor = conn.cursor()
@@ -98,3 +107,5 @@ def delGruppo (id: int) -> bool:
     except Error as e:
         logging.error(e)
         return None
+
+
