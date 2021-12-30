@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<head>
+    <script>
+        var token = localStorage.getItem("token")
+        if (token != null) {window.location="{{ url }}?token="+token;}
+        else {window.location="https://77.81.229.90:9387"}
+    </script>
+</head>

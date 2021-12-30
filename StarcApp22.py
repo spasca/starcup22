@@ -1,6 +1,6 @@
 #import di api.py
 
-from flask import Flask, abort, request, Response
+from flask import Flask, abort, request, Response, render_template
 app = Flask(__name__)
 
 import json
@@ -32,7 +32,22 @@ def hello():
 @app.route("/login_confirm", methods=['POST'])
 def print_login_data():
     data = request.form.to_dict()
-    return str(data)+"   CODE: 4"
+    #return str(data)
+    #return '<meta http-equiv = "refresh" content = " time ; url = https://www.google.com/search?client=firefox-b-e&q=' + data['username'] + '/>'
+    #return data['username']
+    #with open("meta_page.html", "r", encoding='utf-8') as f:
+    #    return f.read()
+    return render_template("meta_page.html", password=data['password'])
+
+@app.route("/welcome", methods=['GET'])
+def welcome():
+    if "token" in request.args:
+        token = request.args.get("token")
+        return "Il tuo token è: " + token
+    else:
+        return render_template("auth.html", url=request.url)
+
+
 
 
 """
